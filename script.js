@@ -1,6 +1,19 @@
+let participantes = JSON.parse(localStorage.getItem("participantes")) || [];
+
+let excluidos = JSON.parse(localStorage.getItem("excluidos")) || [];
+
+
 document.addEventListener("DOMContentLoaded", function() {
     mostrarNombres();
     exclusionesNombres();
+    renderParticipantes();
+    renderExcluidosArriba();
+    renderZonaIzquierda();
+    configurarDrop();
+    configurarPresupuesto();
+
+    document.getElementById("btnAgregar").addEventListener("click", agregarParticipante);
+    document.getElementById("btnGuardarCosto").addEventListener("click", guardarPresupuesto);
 });
 
 const nombreInput = document.getElementById("inputNombre");
@@ -317,3 +330,154 @@ fechas.forEach(fecha => {
         alert("Fecha guardada correctamente: " + fechaSeleccionada);
     });
 });
+
+
+// Card: Participantes
+function agregarParticipante() {
+
+    const input = document.getElementById("inputParticipante");
+    const nombre = input.value.trim();
+
+    if (!nombre) {
+        alert("Ingresa un nombre");
+        return;
+    }
+
+    if (participantes.includes(nombre)) {
+        alert("Ya existe ese participante");
+        return;
+    }
+
+    participantes.push(nombre);
+
+    localStorage.setItem("participantes",JSON.stringify(participantes));
+
+    input.value = "";
+
+    renderParticipantes();
+    renderZonaIzquierda();
+}
+
+
+function renderParticipantes() {
+
+    const contenedor =document.getElementById("listaParticipantes");
+
+    contenedor.innerHTML = "";
+
+    participantes.forEach(nombre => {
+        const div = document.createElement("div");
+        div.textContent = nombre;
+        div.className = "border p-2 mb-2";
+        contenedor.appendChild(div);
+    });
+}
+
+
+// Card: Excluidos
+function renderExcluidosArriba() {
+
+    const contenedor = document.getElementById("divExcluidosArriba");
+
+    contenedor.innerHTML = "";
+
+    excluidos.forEach(nombre => {
+        const div = document.createElement("div");
+        div.textContent = nombre;
+        div.className = "border p-2";
+        div.draggable = true;
+        div.addEventListener("dragstart", e => {
+            e.dataTransfer.setData("text", nombre);
+        });
+        contenedor.appendChild(div);
+    });
+}
+
+
+function renderZonaIzquierda() {
+
+    const zona = document.getElementById("zonaIzquierda");
+
+    zona.innerHTML = "";
+
+    participantes.forEach(nombre => {
+        const div = document.createElement("div");
+        div.textContent = nombre;
+        div.className = "border p-2 mb-2";
+        zona.appendChild(div);
+    });
+}
+
+
+function configurarDrop() {
+
+    const zonaDerecha = document.getElementById("zonaDerecha");
+
+    zonaDerecha.addEventListener("dragover", e => {
+        e.preventDefault();
+    });
+
+    zonaDerecha.addEventListener("drop", e => {
+
+        e.preventDefault();
+        const nombre = e.dataTransfer.getData("text");
+        const div = document.createElement("div");
+        div.textContent = nombre;
+        div.className = "border p-2 mb-2";
+        zonaDerecha.appendChild(div);
+    });
+}
+
+// Card: Presupuesto
+function configurarPresupuesto() {
+    const divs = document.querySelectorAll(".presupuesto");
+    divs.forEach(div => {
+        div.addEventListener("click", () => {
+            presupuestoSeleccionado = div.dataset.valor;
+            document.querySelectorAll(".presupuesto").forEach(d => {
+                d.classList.remove(
+                    "bg-primary",
+                    "text-white"
+                );
+            });
+            div.classList.add(
+                "bg-primary",
+                "text-white"
+            );
+            if (presupuestoSeleccionado === "otro") {
+                document.getElementById("contenedorInputOtro").innerHTML = `
+                    <input 
+                        type="number" 
+                        id="inputOtro" 
+                        class="form-control mt-2" 
+                        placeholder="Escribe otro presupuesto">
+                `;
+            } else {
+                document.getElementById("contenedorInputOtro").innerHTML = "";
+            }
+        });
+    });
+}
+
+
+function guardarPresupuesto() {
+    if (!presupuestoSeleccionado) {
+        alert("Selecciona un presupuesto");
+        return;
+    }
+    let valorFinal = presupuestoSeleccionado;
+    if (presupuestoSeleccionado === "otro") {
+        const input =
+            document.getElementById("inputOtro");
+        if (!input || !input.value) {
+            alert("Escribe un valor");
+            return;
+        }
+        valorFinal = input.value;
+    }
+    localStorage.setItem(
+        "presupuesto",
+        valorFinal
+    );
+    alert("Presupuesto guardado correctamente");
+}

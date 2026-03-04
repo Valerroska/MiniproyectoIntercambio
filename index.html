@@ -7,66 +7,60 @@
     <title>Miniproyecto</title>
 </head>
 <body>
-  <div class="container-fluid bg-dark text-white text-center py-5" id="presentacion">
-  
-  <h1 class="display-3">────୨ৎ────Intercambio Sorpresa────୨ৎ────</h1>
-  
-  <p class="lead">Organiza tu intercambio de regalos fácil y rápido!</p>
-  
-  <button class="btn btn-light btn-lg mt-3" onclick="iniciarApp()">
-    Comenzar
-  </button>
 
-</div>
-    <div class="card">
-  <div class="card-body">
-    1
+  <!-- Presentación -->
+  <div class="container-fluid bg-dark text-white text-center py-5" id="presentacion">
+    <h1 class="display-3">────୨ৎ────Intercambio Sorpresa────୨ৎ────</h1>
+    <p class="lead">Organiza tu intercambio de regalos fácil y rápido!</p>
+    <button class="btn btn-light btn-lg mt-3" onclick="iniciarApp()">
+      Comenzar
+    </button>
   </div>
 
-  <!--SECCION 2--> 
+  <!-- Organizador -->
   <div class="card">
     <div class="card-body shadow-sm rounded-4 p-3 w-25"> 
-      <h6>¿Con quién vas a sortear nombre?</h6>
+      <h6>Organizador</h6>
       <ul class="list-group"></ul>
       <input type="text" id="inputNombre" class="form-control mt-2" placeholder="Escribe un nombre">
       <button type="button" id="agregarNombre" class="btn btn-light rounded-3 mt-3">+</button>
     </div> 
   </div>
 
-  <div class="card mb-3">
-  <div class="card-body">
-
-    <h4>¿Deseas establecer exclusiones?</h4>
-    <p class="lead">Usa exclusiones para evitar que ciertas personas saquen nombres específicos.</p>
-
-    <button class="btn btn-success me-2" onclick="mostrarExclusiones(true)">
-      Sí
-    </button>
-
-    <button class="btn btn-danger" onclick="mostrarExclusiones(false)">
-      No
-    </button>
-
-    <div id="zonaExclusiones" class="mt-4" style="display:none;"> <!-- CONTENIDO QUE APARECE SOLO SI ES SÍ -->
-      
-      <hr>
-      <h5>Configuración de exclusiones</h5>
-
-      <div id="contenidoExclusiones">
-        Aquí irá la lógica de exclusiones
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
+  <!-- Participantes -->
   <div class="card">
-  <div class="card-body">
-    4
+      <div class="card-body">
+          <h5>Lista de Participantes</h5>
+          <div>
+              <input type="text" id="inputParticipante"  placeholder="Nombre del participante">
+              <button id="btnAgregar">Agregar</button>
+          </div>
+          <div id="listaParticipantes"></div>
+      </div>
   </div>
 
-  <!--SECCION 5--> 
+  <!-- Exclusiones -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4>¿Deseas establecer exclusiones?</h4>
+      <p class="lead">Usa exclusiones para evitar que ciertas personas saquen nombres específicos.</p>
+      <button class="btn btn-success me-2" onclick="mostrarExclusiones(true)">
+        Sí
+      </button>
+      <button class="btn btn-danger" onclick="mostrarExclusiones(false)">
+        No
+      </button>
+      <div id="zonaExclusiones" class="mt-4" style="display:none;"> <!-- CONTENIDO QUE APARECE SOLO SI ES SÍ -->
+        <hr>
+        <h5>Configuración de exclusiones</h5>
+        <div id="contenidoExclusiones">
+          Aquí irá la lógica de exclusiones
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A quien se excluye -->
   <div class="card">
     <div class="card-body shadow-sm rounded-4 p-3 w-25">
       <h6>¿A quiénes se van a excluir?</h6>
@@ -76,37 +70,55 @@
     </div>
   </div>
 
-  <div class="card mb-3">
-  <div class="card-body">
-
-    <h4>Tipo de evento</h4>
-
-    <!-- SELECT -->
-    <select class="form-select mb-3" onchange="verificarTipoEvento(this.value)">
-      <option value="">Selecciona una opción</option>
-      <option value="Navidad">Navidad</option>
-      <option value="Cumpleaños">Cumpleaños</option>
-      <option value="San Valentín">San Valentín</option>
-      <option value="Otro">Mostrar más...</option>
-    </select>
-
-    <!-- INPUT OCULTO PARA NOMBRE PERSONALIZADO -->
-    <div id="eventoPersonalizado" style="display:none;">
-      <label class="form-label">Nombre de la celebración</label>
-      <input type="text" class="form-control" id="nombreEventoExtra"
-             placeholder="Escribe el nombre del evento"
-             oninput="guardarEventoPersonalizado()">
-    </div>
-
-  </div>
-</div>
-
+  <!-- Excluidos -->
   <div class="card">
-  <div class="card-body">
-    7
+      <div class="card-body">
+          <h5>Exclusiones</h5>
+          <!-- Excluidos arriba (arrastrables) -->
+          <div class="mb-3">
+              <h6>Elementos a arrastrar (Excluidos)</h6>
+              <div id="divExcluidosArriba"></div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <h6>Participantes</h6>
+                  <div id="zonaIzquierda" class="border p-3"></div>
+              </div>
+              <div class="col-md-6">
+                  <h6>Zona de exclusión</h6>
+                  <div id="zonaDerecha" class="border p-3"></div>
+              </div>
+          </div>
+
+      </div>
   </div>
 
-  <!--SECCION 8--> 
+
+  <!-- Tipo de evento -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4>Tipo de evento</h4>
+      <!-- SELECT -->
+      <select class="form-select mb-3" onchange="verificarTipoEvento(this.value)">
+        <option value="">Selecciona una opción</option>
+        <option value="Navidad">Navidad</option>
+        <option value="Cumpleaños">Cumpleaños</option>
+        <option value="San Valentín">San Valentín</option>
+        <option value="Otro">Mostrar más...</option>
+      </select>
+
+      <!-- INPUT OCULTO PARA NOMBRE PERSONALIZADO -->
+      <div id="eventoPersonalizado" style="display:none;">
+        <label class="form-label">Nombre de la celebración</label>
+        <input type="text" class="form-control" id="nombreEventoExtra"
+              placeholder="Escribe el nombre del evento"
+              oninput="guardarEventoPersonalizado()">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dia de celebración de intercambio -->
   <div class="card">
     <div class="card-body shadow-sm rounded-4 p-3 w-25">
       <h6>¿Cuándo se celebra el intercambio 2026?</h6>
@@ -120,24 +132,36 @@
     </div>
   </div>
 
-  <!-- Mostrar los datos seleccionados -->
-   <div class="card mb-3">
-  <div class="card-body">
-
-    <h4>Resumen del evento</h4>
-
-    <button class="btn btn-primary mb-3" onclick="mostrarDatos()">
-      Mostrar datos del evento
-    </button>
-
-    <div id="resultadoEvento"></div>
-
-    <button class="btn btn-success mt-3" onclick="finalizarConfiguracion()">
-      Finalizar configuración
-    </button>
-
+  <!-- Presupuesto -->
+  <div class="card">
+      <div class="card-body">
+          <h5>Presupuesto</h5>
+          <div id="contenedorPresupuestos">
+              <div class="p-2 border presupuesto" data-valor="200">$200</div>
+              <div class="p-2 border presupuesto" data-valor="300">$300</div>
+              <div class="p-2 border presupuesto" data-valor="400">$400</div>
+              <div class="p-2 border presupuesto" data-valor="500">$500</div>
+              <div class="p-2 border presupuesto" data-valor="600">$600</div>
+              <div class="p-2 border presupuesto" data-valor="otro">Otro</div>
+          </div>
+          <div id="contenedorInputOtro"></div>
+          <button id="btnGuardarCosto">Guardar presupuesto</button>
+      </div>
   </div>
-</div>
+
+  <!-- Mostrar los datos seleccionados -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4>Resumen del evento</h4>
+      <button class="btn btn-primary mb-3" onclick="mostrarDatos()">
+        Mostrar datos del evento
+      </button>
+      <div id="resultadoEvento"></div>
+      <button class="btn btn-success mt-3" onclick="finalizarConfiguracion()">
+        Finalizar configuración
+      </button>
+    </div>
+  </div>
 
     <!-- Sorteo -->
 
