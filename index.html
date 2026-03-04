@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miniproyecto</title>
+    <script src="script.js"></script>
+</head>
+<body>
+  <div class="container-fluid bg-dark text-white text-center py-5" id="presentacion">
+  
+  <h1 class="display-3">────୨ৎ────Intercambio Sorpresa────୨ৎ────</h1>
+  
+  <p class="lead">Organiza tu intercambio de regalos fácil y rápido!</p>
+  
+  <button class="btn btn-light btn-lg mt-3" onclick="iniciarApp()">
+    Comenzar
+  </button>
+
+</div>
+    <div class="card">
+  <div class="card-body">
+    1
+  </div>
+
+  <div class="card">
+  <div class="card-body">
+    2
+  </div>
+
+  <div class="card mb-3">
+  <div class="card-body">
+
+    <h4>¿Deseas establecer exclusiones?</h4>
+    <p class="lead">Usa exclusiones para evitar que ciertas personas saquen nombres específicos.</p>
+
+    <button class="btn btn-success me-2" onclick="mostrarExclusiones(true)">
+      Sí
+    </button>
+
+    <button class="btn btn-danger" onclick="mostrarExclusiones(false)">
+      No
+    </button>
+
+    <div id="zonaExclusiones" class="mt-4" style="display:none;"> <!-- CONTENIDO QUE APARECE SOLO SI ES SÍ -->
+      
+      <hr>
+      <h5>Configuración de exclusiones</h5>
+
+      <div id="contenidoExclusiones">
+        Aquí irá la lógica de exclusiones
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+  <div class="card">
+  <div class="card-body">
+    4
+  </div>
+
+  <div class="card">
+  <div class="card-body">
+    5
+  </div>
+
+  <div class="card mb-3">
+  <div class="card-body">
+
+    <h4>Tipo de evento</h4>
+
+    <!-- SELECT -->
+    <select class="form-select mb-3" onchange="verificarTipoEvento(this.value)">
+      <option value="">Selecciona una opción</option>
+      <option value="Navidad">Navidad</option>
+      <option value="Cumpleaños">Cumpleaños</option>
+      <option value="San Valentín">San Valentín</option>
+      <option value="Otro">Mostrar más...</option>
+    </select>
+
+    <!-- INPUT OCULTO PARA NOMBRE PERSONALIZADO -->
+    <div id="eventoPersonalizado" style="display:none;">
+      <label class="form-label">Nombre de la celebración</label>
+      <input type="text" class="form-control" id="nombreEventoExtra"
+             placeholder="Escribe el nombre del evento"
+             oninput="guardarEventoPersonalizado()">
+    </div>
+
+  </div>
+</div>
+
+  <div class="card">
+  <div class="card-body">
+    7
+  </div>
+
+  <div class="card">
+  <div class="card-body">
+    8
+  </div>
+
+  <!-- Mostrar los datos seleccionados -->
+   <div class="card mb-3">
+  <div class="card-body">
+
+    <h4>Resumen del evento</h4>
+
+    <button class="btn btn-primary mb-3" onclick="mostrarDatos()">
+      Mostrar datos del evento
+    </button>
+
+    <div id="resultadoEvento"></div>
+
+    <button class="btn btn-success mt-3" onclick="finalizarConfiguracion()">
+      Finalizar configuración
+    </button>
+
+  </div>
+</div>
+
+    <!-- Sorteo -->
+
+</body>
+</html>
