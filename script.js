@@ -1,3 +1,17 @@
+document.addEventListener("DOMContentLoaded", function() {
+    mostrarNombres();
+    exclusionesNombres();
+});
+
+const nombreInput = document.getElementById("inputNombre");
+const agregarBtn = document.getElementById("agregarNombre");
+const hechoBtn = document.getElementById("hechoBtn");
+const cancelarBtn = document.getElementById("cancelarBtn");
+const calendarioBtn = document.getElementById("fechaCalendario");
+const cancelarFechaBtn = document.getElementById("cancelarFecha");
+const aceptarFechaBtn = document.getElementById("aceptarFecha");
+const fechas = document.querySelectorAll("#fecha1, #fecha2, #fecha3");
+
 //PRESENTACIÓN --------------------------------------------------------------------------------------
 function iniciarApp() {
   document.getElementById("presentacion").style.display = "none"; //Ocultar
@@ -123,3 +137,183 @@ function mostrarDatos() {
 function finalizarConfiguracion() {
   alert("Configuración finalizada. Proceder al sorteo");
 }
+
+
+/****************SECCION 2*********************/
+
+nombreInput.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        e.preventDefault();
+        agregarNombre();
+    }
+});
+
+agregarBtn.addEventListener("click", function() {
+    agregarNombre();
+});
+
+// Agregar un nombre en el organizador
+function agregarNombre(){
+    const nombreInput = document.getElementById("inputNombre");
+    const nombre = nombreInput.value.trim();
+    if(nombre === "") return;
+
+    let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
+    nombres.push(nombre);
+    localStorage.setItem("nombres", JSON.stringify(nombres));
+
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+    li.textContent = nombre; 
+    
+    const boton = document.createElement("button");
+    boton.className = "btn btn-sm btn-quitar";
+    boton.textContent = "x";
+    li.appendChild(boton);
+
+    document.querySelector(".list-group").appendChild(li);
+    nombreInput.value = "";
+}
+
+// Que persistan los nombres del organizador aunque se recargue la página
+function mostrarNombres() {
+    const lista = document.querySelector(".list-group");
+    lista.innerHTML = "";
+    let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
+    nombres.forEach(nombre =>{
+        lista.innerHTML += `
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            ${nombre}
+            <button class="btn btn-sm btn-quitar">x</button>
+        </li>`;
+    });
+}
+
+// Eliminar un nombre del organizador
+document.addEventListener("click", function(e) {
+    const boton = e.target.closest(".btn-quitar");
+
+    if(boton) {
+        const item = boton.closest(".list-group-item");
+        const nombre = item.firstChild.textContent.trim(); 
+        let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
+        nombres = nombres.filter(n => n !== nombre);
+        localStorage.setItem("nombres", JSON.stringify(nombres));
+        if(item){
+            item.remove(); // Se elimina el li
+        }
+    }
+});
+
+/****************SECCION 5*********************/
+
+// Muestra nombres para hacer lista de exluidos 
+function exclusionesNombres(){
+    const exclusionesDiv = document.getElementById("exclusiones");
+    exclusionesDiv.innerHTML = "";
+    
+    let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
+    nombres.forEach(nombre =>{
+        exclusionesDiv.innerHTML += `
+        <input class="form-check-input" type="checkbox" value="${nombre}" id="checkDefault">
+        <label class="form-check-label" for="checkDefault">
+            ${nombre}
+        </label>
+        <br>`;
+    });
+    // Agregar mensaje de refrescar en HTML o refrescar automáticamente aquí ******PENDIENTE******
+}
+
+// Botón que guarda en local storage los nombre de los exluidos 
+hechoBtn.addEventListener("click", function() {
+    const preguntar = confirm("¿Deseas guardar las exclusiones seleccionadas?");
+    if(preguntar){
+        const check = document.querySelectorAll("#exclusiones input[type='checkbox']:checked");
+        let excluidos = JSON.parse(localStorage.getItem("excluidos")) || [];
+        check.forEach(c => {
+            if(!excluidos.includes(c.value)){ // Evita que haya repetidos
+                excluidos.push(c.value); 
+            }
+        });
+        localStorage.setItem("excluidos", JSON.stringify(excluidos));
+        check.forEach(c => c.checked = false);
+        alert("Exclusiones guardadas correctamente.")
+    }else{
+        alert("Se eliminaron las exclusiones selccionadas.");
+        check.forEach(c => c.checked = false);
+    }
+});
+
+// Botón cancelar para desmarcar los checkboxes
+cancelarBtn.addEventListener("click", function() {
+    const check = document.querySelectorAll("#exclusiones input[type='checkbox']");
+    check.forEach(c => c.checked = false);
+    localStorage.removeItem("excluidos");
+    alert("Se eliminaron las exclusiones selccionadas.");
+});
+
+/****************SECCION 8*********************/
+
+// Botón para mostrar calendario 
+calendarioBtn.addEventListener("click", function() {
+    const divCalendario = document.getElementById("calendario");
+    divCalendario.innerHTML = `
+    <h6>Fecha del intercambio:</h6>
+    <input type="text" id="datePicker" class="form-control">`;
+
+    let datePicker = document.getElementById('datePicker');
+    let picker = new Litepicker({
+        element: datePicker,
+        lang: 'es-ES',
+        format: 'DD MMMM YYYY'
+    });
+    
+    let dateRangePicker = document.getElementById('dateRangePicker');
+    let pickerRange = new Litepicker({
+        element: dateRangePicker,
+        format: 'DD MMMM YYYY',
+        lang: 'es-ES',
+        singleMode: false,
+    });
+});
+
+// Botón para eliminar la fecha 
+cancelarFechaBtn.addEventListener("click", function() {
+    const divCalendario = document.getElementById("calendario");
+    divCalendario.innerHTML = "";
+    localStorage.removeItem("fechaIntercambio");
+    alert("Fecha eliminada correctamente.");
+});
+
+// Botón para guardar la fecha seleccionada del calendario
+aceptarFechaBtn.addEventListener("click", function() {
+    const fechaSeleccionada = document.getElementById("datePicker").value;
+    localStorage.setItem("fechaIntercambio", fechaSeleccionada);
+    alert("Fecha guardada correctamente: " + fechaSeleccionada);    
+});
+
+// Función para crear fechas cercanas a la fecha actual 
+function crearFechas(){
+    const actual = new Date();
+    const fecha1 = new Date(actual);
+    const fecha2 = new Date(actual);
+    const fecha3 = new Date(actual);
+
+    fecha2.setDate(actual.getDate() + 7); 
+    fecha3.setDate(actual.getDate() + 14); 
+
+    document.getElementById("fecha1").textContent = fecha1.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById("fecha2").textContent = fecha2.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById("fecha3").textContent = fecha3.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+crearFechas(); 
+
+// Guarda la fecha en el local storage de las opc predeterminadas 
+fechas.forEach(fecha => {
+    fecha.addEventListener("click", function() {
+        const fechaSeleccionada = this.textContent;
+        localStorage.setItem("fechaIntercambio", fechaSeleccionada);
+        alert("Fecha guardada correctamente: " + fechaSeleccionada);
+    });
+});

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Miniproyecto</title>
-    <script src="script.js"></script>
 </head>
 <body>
   <div class="container-fluid bg-dark text-white text-center py-5" id="presentacion">
@@ -23,9 +23,14 @@
     1
   </div>
 
+  <!--SECCION 2--> 
   <div class="card">
-  <div class="card-body">
-    2
+    <div class="card-body shadow-sm rounded-4 p-3 w-25"> 
+      <h6>¿Con quién vas a sortear nombre?</h6>
+      <ul class="list-group"></ul>
+      <input type="text" id="inputNombre" class="form-control mt-2" placeholder="Escribe un nombre">
+      <button type="button" id="agregarNombre" class="btn btn-light rounded-3 mt-3">+</button>
+    </div> 
   </div>
 
   <div class="card mb-3">
@@ -61,9 +66,14 @@
     4
   </div>
 
+  <!--SECCION 5--> 
   <div class="card">
-  <div class="card-body">
-    5
+    <div class="card-body shadow-sm rounded-4 p-3 w-25">
+      <h6>¿A quiénes se van a excluir?</h6>
+      <div id="exclusiones"></div>
+      <button id="cancelarBtn" class="btn rounded-3 mt-3 btn-light">Cancelar</button> <!--btn-light hace el botón de color claro-->
+      <button id="hechoBtn" class="btn rounded-3 mt-3 btn-primary">Hecho</button>
+    </div>
   </div>
 
   <div class="card mb-3">
@@ -96,9 +106,18 @@
     7
   </div>
 
+  <!--SECCION 8--> 
   <div class="card">
-  <div class="card-body">
-    8
+    <div class="card-body shadow-sm rounded-4 p-3 w-25">
+      <h6>¿Cuándo se celebra el intercambio 2026?</h6>
+      <button id="fecha1" class="btn btn-light"></button>
+      <button id="fecha2" class="btn btn-light"></button>
+      <button id="fecha3" class="btn btn-light"></button><br>
+      <button id="fechaCalendario" class="btn rounded-3 mt-3 btn-light">Otro 🖋️</button> 
+      <div id="calendario"></div>
+      <button id="cancelarFecha" class="btn rounded-3 mt-3 btn-light">Cancelar</button>
+      <button id="aceptarFecha" class="btn rounded-3 mt-3 btn-primary">Aceptar</button>
+    </div>
   </div>
 
   <!-- Mostrar los datos seleccionados -->
@@ -122,5 +141,8 @@
 
     <!-- Sorteo -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="script.js"></script>
 </body>
 </html>
