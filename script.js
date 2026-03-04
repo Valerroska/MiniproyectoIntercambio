@@ -154,69 +154,27 @@ function finalizarConfiguracion() {
 
 /****************SECCION 2*********************/
 
-nombreInput.addEventListener("keypress", function(e) {
-    if(e.key === "Enter") {
-        e.preventDefault();
-        agregarNombre();
-    }
-});
-
 agregarBtn.addEventListener("click", function() {
     agregarNombre();
 });
 
-// Agregar un nombre en el organizador
+// Guarda el nombre del organizador
 function agregarNombre(){
-    const nombreInput = document.getElementById("inputNombre");
+    const nombreInput = document.getElementById("inputNombreOrganizador");
     const nombre = nombreInput.value.trim();
-    if(nombre === "") return;
-
-    let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
-    nombres.push(nombre);
-    localStorage.setItem("nombres", JSON.stringify(nombres));
-
-    const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between align-items-center";
-    li.textContent = nombre; 
-    
-    const boton = document.createElement("button");
-    boton.className = "btn btn-sm btn-quitar";
-    boton.textContent = "x";
-    li.appendChild(boton);
-
-    document.querySelector(".list-group").appendChild(li);
-    nombreInput.value = "";
-}
-
-// Que persistan los nombres del organizador aunque se recargue la página
-function mostrarNombres() {
-    const lista = document.querySelector(".list-group");
-    lista.innerHTML = "";
-    let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
-    nombres.forEach(nombre =>{
-        lista.innerHTML += `
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            ${nombre}
-            <button class="btn btn-sm btn-quitar">x</button>
-        </li>`;
-    });
-}
-
-// Eliminar un nombre del organizador
-document.addEventListener("click", function(e) {
-    const boton = e.target.closest(".btn-quitar");
-
-    if(boton) {
-        const item = boton.closest(".list-group-item");
-        const nombre = item.firstChild.textContent.trim(); 
-        let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
-        nombres = nombres.filter(n => n !== nombre);
-        localStorage.setItem("nombres", JSON.stringify(nombres));
-        if(item){
-            item.remove(); // Se elimina el li
-        }
+    if(nombre === ""){
+        alert("Por favor, ingresa un nombre");
+        return;
     }
-});
+
+    const check = document.querySelector("#zonaOrganizador input[type='checkbox']");
+    const checkMarcado = check.checked;
+    localStorage.setItem("organizador", nombre);
+    localStorage.setItem("incluirOrganizador", checkMarcado);
+    alert("Nombre del organizador guardado correctamente: " + nombre);
+    nombreInput.value = "";
+    check.checked = false;
+}
 
 /****************SECCION 5*********************/
 
