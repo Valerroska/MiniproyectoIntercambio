@@ -20,10 +20,13 @@
   <!-- Organizador -->
   <div class="card">
     <div class="card-body shadow-sm rounded-4 p-3 w-25"> 
-      <h6>Organizador</h6>
-      <ul class="list-group"></ul>
-      <input type="text" id="inputNombre" class="form-control mt-2" placeholder="Escribe un nombre">
-      <button type="button" id="agregarNombre" class="btn btn-light rounded-3 mt-3">+</button>
+      <h6>¿Cuál es tu nombre?</h6>
+      <div id="zonaOrganizador">
+        <input type="text" id="inputNombreOrganizador" class="form-control mt-2" placeholder="Nombre">
+        <input class="form-check-input" type="checkbox" id="checkDefault">
+        <label class="form-check-label" for="checkDefault">Inclúyeme en el sorteo</label><br>
+        <button type="button" id="agregarNombre" class="btn btn-light rounded-3 mt-3">Guardar</button>
+      </div>
     </div> 
   </div>
 
