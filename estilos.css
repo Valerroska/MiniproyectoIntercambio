@@ -1,0 +1,46 @@
+body {
+    background-color: #f0f7f8;
+    color: #5a7d8a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    background-color: #ffffff !important;
+    border: 2px solid #89c2d9!important;
+    border-radius: 20px !important;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.btn-light {
+    background-color: #aed9e0 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.btn-primary {
+    background-color: #89c2d9 !important;
+    border: none !important;
+}
+
+#presentacion {
+    background: linear-gradient(135deg, #aed9e0, #d6eef5) !important;
+    border-bottom: 5px solid #89c2d9;
+}
+
+.border {
+    border-color: #89c2d9 !important;
+    border-radius: 10px;
+}
+
+#zonaIzquierda, #zonaDerecha {
+    background-color: #fafdfd;
+}
+
+h6, h5 {
+    color: #2883a4 !important;
+    font-weight: bold !important;
+}

@@ -4,8 +4,9 @@
 
 let participantes = JSON.parse(localStorage.getItem("participantes")) || [];
 let excluidos = JSON.parse(localStorage.getItem("excluidos")) || [];
+let exclusionesDrag = JSON.parse(localStorage.getItem("exclusionesDrag")) || [];
 let presupuestoSeleccionado = null;
-
+let exclusionesTemp = [];
 
 /* ======================================================
    DOM CONTENT LOADED
@@ -16,16 +17,16 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ===== Render inicial ===== */
     exclusionesNombres();
     renderParticipantes();
-    renderExcluidosArriba();
-    renderZonaIzquierda();
-    configurarDrop();
     configurarPresupuesto();
     crearFechas();
+    renderZonaArrastre();
+    renderParticipantesExcluidos();
 
     /* ===== Botones principales ===== */
     document.getElementById("btnAgregar").addEventListener("click", agregarParticipante);
     document.getElementById("btnGuardarCosto").addEventListener("click", guardarPresupuesto);
     document.getElementById("agregarNombre").addEventListener("click", agregarNombre);
+    document.getElementById("confirmarExclusiones").addEventListener("click", confirmarExclusiones);
 
     /* ===== Exclusiones ===== */
     document.getElementById("hechoBtn").addEventListener("click", guardarExclusiones);
@@ -36,6 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("cancelarFecha").addEventListener("click", cancelarFecha);
     document.getElementById("aceptarFecha").addEventListener("click", aceptarFecha);
 
+    /* ======= Resultado Sorteo ==========*/
+    document.getElementById("btnSorteo").addEventListener("click", resultadoSorteo);
+
     /* ===== Fechas rápidas ===== */
     document.querySelectorAll("#fecha1, #fecha2, #fecha3").forEach(fecha => {
         fecha.addEventListener("click", function () {
@@ -44,6 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Fecha guardada correctamente: " + fechaSeleccionada);
         });
     });
+
+    
 });
 
 
@@ -61,17 +67,23 @@ function iniciarApp() {
 ====================================================== */
 
 function agregarNombre() {
-
+    const organizadorGuardado = localStorage.getItem("organizador");
     const nombreInput = document.getElementById("inputNombreOrganizador");
     const nombre = nombreInput.value.trim();
+    const check = document.querySelector("#zonaOrganizador input[type='checkbox']");
+    const checkMarcado = check.checked;
 
+    if(organizadorGuardado) {
+        alert("Ya existe un organizador registrado: " + organizadorGuardado); 
+        nombreInput.value = "";
+        check.checked = false;
+        return;
+    }
+    
     if (nombre === "") {
         alert("Por favor, ingresa un nombre");
         return;
     }
-
-    const check = document.querySelector("#zonaOrganizador input[type='checkbox']");
-    const checkMarcado = check.checked;
 
     localStorage.setItem("organizador", nombre);
     localStorage.setItem("incluirOrganizador", checkMarcado);
@@ -135,6 +147,7 @@ function renderParticipantes() {
 
 
 
+
 /* ======================================================
    EXCLUSIONES SI/NO
 ====================================================== */
@@ -160,9 +173,10 @@ function mostrarExclusiones(valor) {
 function exclusionesNombres() {
 
     const exclusionesDiv = document.getElementById("exclusiones");
+    // const exclusionesDiv = document.getElementById("participantes");
     exclusionesDiv.innerHTML = "";
 
-    let nombres = JSON.parse(localStorage.getItem("nombres")) || [];
+    let nombres = JSON.parse(localStorage.getItem("participantes")) || [];
 
     nombres.forEach(nombre => {
         exclusionesDiv.innerHTML += `
@@ -188,6 +202,7 @@ function guardarExclusiones() {
 
         localStorage.setItem("excluidos", JSON.stringify(excluidos));
         check.forEach(c => c.checked = false);
+        renderParticipantesExcluidos();
         alert("Exclusiones guardadas correctamente.");
 
     } else {
@@ -202,27 +217,10 @@ function cancelarExclusiones() {
 
     localStorage.removeItem("excluidos");
     alert("Se eliminaron las exclusiones seleccionadas.");
+    renderParticipantesExcluidos();
 }
 
-function renderExcluidosArriba() {
 
-    const contenedor = document.getElementById("divExcluidosArriba");
-    contenedor.innerHTML = "";
-
-    excluidos.forEach(nombre => {
-
-        const div = document.createElement("div");
-        div.textContent = nombre;
-        div.className = "border p-2";
-        div.draggable = true;
-
-        div.addEventListener("dragstart", e => {
-            e.dataTransfer.setData("text", nombre);
-        });
-
-        contenedor.appendChild(div);
-    });
-}
 
 
 
@@ -230,39 +228,98 @@ function renderExcluidosArriba() {
    DRAG & DROP
 ====================================================== */
 
-function renderZonaIzquierda() {
+function renderParticipantesExcluidos() {
 
-    const zona = document.getElementById("zonaIzquierda");
-    zona.innerHTML = "";
+    const contenedor = document.getElementById("listaParticipantesExcluidos");
+    contenedor.innerHTML = "";
 
     participantes.forEach(nombre => {
-        const div = document.createElement("div");
-        div.textContent = nombre;
-        div.className = "border p-2 mb-2";
-        zona.appendChild(div);
+
+        const fila = document.createElement("div");
+        fila.className = "d-flex justify-content-between align-items-center border p-2 mb-2";
+
+        const izquierda = document.createElement("div");
+        izquierda.textContent = nombre;
+        izquierda.style.width = "50%";
+
+        const derecha = document.createElement("div");
+        derecha.textContent = "Soltar aquí";
+        derecha.style.width = "50%";
+        derecha.style.textAlign = "right";
+
+        derecha.addEventListener("dragover", e => e.preventDefault());
+
+        derecha.addEventListener("drop", e => {
+
+            e.preventDefault();
+
+            const quienExcluye = e.dataTransfer.getData("quienExcluye");
+
+            if (!quienExcluye) return;
+
+            if (quienExcluye === nombre) {
+                alert("No puedes excluirte a ti mismo");
+                return;
+            }
+
+            // 🚨 EVITAR REPETIDOS
+            const yaExiste = exclusionesDrag.find(e =>
+                e.quien === quienExcluye &&
+                e.noPuedeRegalarA === nombre
+            );
+
+            if (yaExiste) {
+                alert("Esa exclusión ya existe");
+                return;
+            }
+
+            exclusionesDrag.push({
+                quien: nombre,
+                noPuedeRegalarA: quienExcluye
+            });
+
+            localStorage.setItem("exclusionesDrag", JSON.stringify(exclusionesDrag));
+
+            derecha.textContent = quienExcluye + "❌";
+        });
+
+        fila.appendChild(izquierda);
+        fila.appendChild(derecha);
+        contenedor.appendChild(fila);
     });
 }
 
-function configurarDrop() {
+function renderZonaArrastre() {
 
-    const zonaDerecha = document.getElementById("zonaDerecha");
+    const contenedor = document.getElementById("zonaArrastre");
+    contenedor.innerHTML = "";
 
-    zonaDerecha.addEventListener("dragover", e => e.preventDefault());
-
-    zonaDerecha.addEventListener("drop", e => {
-
-        e.preventDefault();
-        const nombre = e.dataTransfer.getData("text");
+    excluidos.forEach(nombre => {
 
         const div = document.createElement("div");
+        div.className = "badge bg-secondary m-1";
         div.textContent = nombre;
-        div.className = "border p-2 mb-2";
+        div.draggable = true;
 
-        zonaDerecha.appendChild(div);
+        div.addEventListener("dragstart", e => {
+            e.dataTransfer.setData("quienExcluye", nombre);
+        });
+
+        contenedor.appendChild(div);
     });
 }
 
+function confirmarExclusiones() {
 
+    if (exclusionesDrag.length === 0) {
+        alert("No hay exclusiones configuradas.");
+        return;
+    }
+
+    alert("Exclusiones confirmadas correctamente");
+
+    console.log("Exclusiones guardadas:", exclusionesDrag);
+}
 
 /* ======================================================
    TIPO DE EVENTO
@@ -406,4 +463,62 @@ function guardarPresupuesto() {
 
 // mostrar datos de evento
 
-// resultados de sorteo
+
+/* =============================================
+    REALIZAR SORTEO 
+================================================ */
+function resultadoSorteo() {
+
+    if (participantes.length < 2) {
+        alert("Necesitas al menos 2 participantes.");
+        return;
+    }
+
+    let intentoValido = false;
+    let resultadoFinal = {};
+    let intentos = 0;
+
+    while (!intentoValido && intentos < 500) {
+
+        intentos++;
+        let disponibles = [...participantes];
+        resultadoFinal = {};
+        intentoValido = true;
+
+        for (let persona of participantes) {
+
+            let opciones = disponibles.filter(p => p !== persona);
+
+            opciones = opciones.filter(p => {
+                return !exclusionesDrag.some(ex =>
+                    ex.quien === persona && ex.noPuedeRegalarA === p
+                );
+            });
+
+            if (opciones.length === 0) {
+                intentoValido = false;
+                break;
+            }
+
+            let elegido = opciones[Math.floor(Math.random() * opciones.length)];
+
+            resultadoFinal[persona] = elegido;
+
+            disponibles = disponibles.filter(p => p !== elegido);
+        }
+    }
+
+    if (!intentoValido) {
+        alert("No se puede generar un sorteo válido con las exclusiones actuales.");
+        return;
+    }
+
+    let contenedor = document.getElementById("resultadoSorteo");
+    contenedor.innerHTML = "";
+
+    for (let persona in resultadoFinal) {
+        contenedor.innerHTML += `
+            <p><strong>${persona}</strong> regala a <strong>${resultadoFinal[persona]}</strong></p>
+        `;
+    }
+}
