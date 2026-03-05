@@ -1,3 +1,7 @@
+html{
+  scroll-behavior: smooth;
+}
+
 body {
     background-color: #f0f7f8;
     color: #5a7d8a;
@@ -29,6 +33,15 @@ body {
 #presentacion {
     background: linear-gradient(135deg, #aed9e0, #d6eef5) !important;
     border-bottom: 5px solid #89c2d9;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnIniciar{
+    width: 400px;
 }
 
 .border {
@@ -43,4 +56,31 @@ body {
 h6, h5 {
     color: #2883a4 !important;
     font-weight: bold !important;
+}
+
+.presupuesto{
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.presupuesto.seleccionado{
+    background-color:#89c2d9;
+    color:white;
+    border-color:#89c2d9;
+}
+
+.btnEliminar{
+    background-color: #89c2d9;
+    border: none;
+    color: white;
+    border-radius: 20%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
