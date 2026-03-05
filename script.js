@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("btnGuardarCosto").addEventListener("click", guardarPresupuesto);
     document.getElementById("agregarNombre").addEventListener("click", agregarNombre);
     document.getElementById("confirmarExclusiones").addEventListener("click", confirmarExclusiones);
+    document.getElementById("btnComenzar").addEventListener("click", iniciarApp);
 
     /* ===== Exclusiones ===== */
     document.getElementById("hechoBtn").addEventListener("click", guardarExclusiones);
@@ -47,6 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("fechaIntercambio", fechaSeleccionada);
             alert("Fecha guardada correctamente: " + fechaSeleccionada);
         });
+    });
+
+    /* ===== Presupuesto ===== */
+    document.querySelectorAll(".presupuesto").forEach(p => {
+        p.addEventListener("click", seleccionarPresupuesto);
     });
 
     
@@ -137,14 +143,37 @@ function renderParticipantes() {
     const contenedor = document.getElementById("listaParticipantes");
     contenedor.innerHTML = "";
 
-    participantes.forEach(nombre => {
+    participantes.forEach((nombre, index) => {
+
         const div = document.createElement("div");
-        div.textContent = nombre;
-        div.className = "border p-2 mb-2";
+        div.className = "border p-2 mb-2 d-flex justify-content-between align-items-center";
+
+        const span = document.createElement("span");
+        span.textContent = nombre;
+
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "✖";
+        btnEliminar.className = "btnEliminar";
+
+        btnEliminar.addEventListener("click", () => {
+            eliminarParticipante(index);
+        });
+
+        div.appendChild(span);
+        div.appendChild(btnEliminar);
+
         contenedor.appendChild(div);
     });
 }
 
+function eliminarParticipante(index) {
+
+    participantes.splice(index, 1);
+
+    localStorage.setItem("participantes", JSON.stringify(participantes));
+
+    renderParticipantes();
+}
 
 
 
@@ -413,10 +442,9 @@ function configurarPresupuesto() {
 
             presupuestoSeleccionado = div.dataset.valor;
 
-            document.querySelectorAll(".presupuesto")
-                .forEach(d => d.classList.remove("bg-primary", "text-white"));
+            document.querySelectorAll(".presupuesto").forEach(d => d.classList.remove("presupuesto-seleccionado"));
 
-            div.classList.add("bg-primary", "text-white");
+            div.classList.add("presupuesto-seleccionado");
 
             if (presupuestoSeleccionado === "otro") {
 
@@ -458,6 +486,15 @@ function guardarPresupuesto() {
 
     localStorage.setItem("presupuesto", valorFinal);
     alert("Presupuesto guardado correctamente");
+}
+
+function seleccionarPresupuesto() {
+
+    document.querySelectorAll(".presupuesto")
+        .forEach(el => el.classList.remove("seleccionado"));
+
+    this.classList.add("seleccionado");
+
 }
 
 
