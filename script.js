@@ -1,6 +1,4 @@
-/* ======================================================
-   VARIABLES GLOBALES
-====================================================== */
+// Variables globales
 
 let participantes = JSON.parse(localStorage.getItem("participantes")) || [];
 let excluidos = JSON.parse(localStorage.getItem("excluidos")) || [];
@@ -9,9 +7,7 @@ let presupuestoSeleccionado = null;
 let exclusionesTemp = [];
 let sorteoRealizado = localStorage.getItem("sorteoRealizado") === "true";
 
-/* ======================================================
-   DOM CONTENT LOADED
-====================================================== */
+// Dom Content Loaded
 
 document.addEventListener("DOMContentLoaded", function () {
   /* ===== Render inicial ===== */
@@ -50,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", confirmarExclusiones);
   document.getElementById("btnComenzar").addEventListener("click", iniciarApp);
 
-  /* ===== Exclusiones ===== */
+  // Exclusiones
   document
     .getElementById("hechoBtn")
     .addEventListener("click", guardarExclusiones);
@@ -58,47 +54,47 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("cancelarBtn")
     .addEventListener("click", cancelarExclusiones);
 
-  // Exclusiones SI VALE
+  // Exclusiones SI 
   document
     .getElementById("btnExclusionesSi")
     .addEventListener("click", function () {
       mostrarExclusiones(true);
     });
 
-  // Exclusiones NO VALE
+  // Exclusiones NO 
   document
     .getElementById("btnExclusionesNo")
     .addEventListener("click", function () {
       mostrarExclusiones(false);
     });
 
-  // Select tipo de evento VALE
+  // Select tipo de evento
   document
     .getElementById("selectEvento")
     .addEventListener("change", function () {
       verificarTipoEvento(this.value);
     });
 
-  // Input tipo evento personalizado VALE
+  // Input tipo evento personalizado
   document
     .getElementById("nombreEventoExtra")
     .addEventListener("input", function () {
       guardarEventoPersonalizado();
     });
 
-  /* ===== Calendario ===== */
+  // Calendario
   document
     .getElementById("fechaCalendario")
     .addEventListener("click", mostrarCalendario);
 
-  // Mostrar datos VALE
+  // Mostrar datos 
   document
     .getElementById("btnMostrarDatos")
     .addEventListener("click", function () {
       mostrarDatos();
     });
 
-  /* ======= Resultado Sorteo ==========*/
+  // Resultado Sorteo
   document
     .getElementById("btnSorteo")
     .addEventListener("click", resultadoSorteo);
@@ -109,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("ventanaSorteo").style.display = "none";
     });
 
-  /* ===== Fechas rápidas ===== */
+  // Fechas Rápidas
   document.querySelectorAll("#fecha1, #fecha2, #fecha3").forEach((fecha) => {
     fecha.addEventListener("click", function () {
       const fechaSeleccionada = this.textContent;
@@ -122,23 +118,19 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("cancelarFecha")
     .addEventListener("click", cancelarFecha);
 
-  /* ===== Presupuesto ===== */
+  // Presupuesto
   document.querySelectorAll(".presupuesto").forEach((p) => {
     p.addEventListener("click", seleccionarPresupuesto);
   });
 });
 
-/* ======================================================
-   PRESENTACIÓN
-====================================================== */
+// Presentacion
 
 function iniciarApp() {
   document.getElementById("presentacion").style.display = "none";
 }
 
-/* ======================================================
-   ORGANIZADOR
-====================================================== */
+// Organizador
 
 function agregarNombre() {
   const nombreInput = document.getElementById("inputNombreOrganizador");
@@ -171,9 +163,7 @@ function agregarNombre() {
   check.checked = false;
 }
 
-/* ======================================================
-   PARTICIPANTES
-====================================================== */
+// Participantes
 
 function agregarParticipante() {
   const input = document.getElementById("inputParticipante");
@@ -233,9 +223,7 @@ function eliminarParticipante(index) {
   renderParticipantes();
 }
 
-/* ======================================================
-   EXCLUSIONES SI/NO
-====================================================== */
+// Exclusiones SI/No
 
 function mostrarExclusiones(valor) {
   const zona = document.getElementById("zonaExclusiones");
@@ -267,9 +255,7 @@ function mostrarExclusiones(valor) {
   }
 }
 
-/* ======================================================
-   EXCLUIDOS
-====================================================== */
+// Excluidos
 
 function exclusionesNombres() {
   const exclusionesDiv = document.getElementById("exclusiones");
@@ -321,9 +307,7 @@ function cancelarExclusiones() {
   renderParticipantesExcluidos();
 }
 
-/* ======================================================
-   DRAG & DROP
-====================================================== */
+// Drag & Drop
 
 function renderParticipantesExcluidos() {
   const contenedor = document.getElementById("listaParticipantesExcluidos");
@@ -356,8 +340,7 @@ function renderParticipantesExcluidos() {
         alert("No puedes excluirte a ti mismo");
         return;
       }
-
-      // 🚨 EVITAR REPETIDOS
+      
       const yaExiste = exclusionesDrag.find(
         (e) => e.quien === quienExcluye && e.noPuedeRegalarA === nombre,
       );
@@ -412,9 +395,7 @@ function confirmarExclusiones() {
   console.log("Exclusiones guardadas:", exclusionesDrag);
 }
 
-/* ======================================================
-   TIPO DE EVENTO
-====================================================== */
+// Tipo de evento
 
 function verificarTipoEvento(valor) {
   const zonaPersonalizada = document.getElementById("eventoPersonalizado");
@@ -454,13 +435,11 @@ function guardarEventoPersonalizado() {
         ". Ahora aparecerá en el resumen del evento!!",
     );
 
-    inputEvento.value = ""; // opcional: limpiar input
+    inputEvento.value = ""; 
   });
 }
 
-/* ======================================================
-   FECHAS
-====================================================== */
+// Fechas
 
 function mostrarCalendario() {
   const divCalendario = document.getElementById("calendario");
@@ -536,9 +515,7 @@ function crearFechas() {
   );
 }
 
-/* ======================================================
-   PRESUPUESTO
-====================================================== */
+// Presupuesto
 
 function configurarPresupuesto() {
   const divs = document.querySelectorAll(".presupuesto");
@@ -656,9 +633,7 @@ function mostrarDatos() {
   alert("Mostrando resumen...");
 }
 
-/* =============================================
-    REALIZAR SORTEO 
-================================================ */
+// Realizar sorteo
 
 function resultadoSorteo() {
   if (sorteoRealizado) {
