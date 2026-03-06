@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderZonaArrastre();
   renderParticipantesExcluidos();
 
-  // Mantener abierto el apartado de exclusiones si ya dijeron "Sí" VALE
+  // Para mantener abierto el apartado de exclusiones si ya se seleccionó "Sí" VALE
   if (localStorage.getItem("exclusiones") === "Sí") {
     const zona = document.getElementById("zonaExclusiones");
     zona.style.display = "block"; // mostrar la sección
@@ -58,10 +58,45 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("cancelarBtn")
     .addEventListener("click", cancelarExclusiones);
 
+  // Exclusiones SI VALE
+  document
+    .getElementById("btnExclusionesSi")
+    .addEventListener("click", function () {
+      mostrarExclusiones(true);
+    });
+
+  // Exclusiones NO VALE
+  document
+    .getElementById("btnExclusionesNo")
+    .addEventListener("click", function () {
+      mostrarExclusiones(false);
+    });
+
+  // Select tipo de evento VALE
+  document
+    .getElementById("selectEvento")
+    .addEventListener("change", function () {
+      verificarTipoEvento(this.value);
+    });
+
+  // Input tipo evento personalizado VALE
+  document
+    .getElementById("nombreEventoExtra")
+    .addEventListener("input", function () {
+      guardarEventoPersonalizado();
+    });
+
   /* ===== Calendario ===== */
   document
     .getElementById("fechaCalendario")
     .addEventListener("click", mostrarCalendario);
+
+  // Mostrar datos VALE
+  document
+    .getElementById("btnMostrarDatos")
+    .addEventListener("click", function () {
+      mostrarDatos();
+    });
 
   /* ======= Resultado Sorteo ==========*/
   document
@@ -212,6 +247,8 @@ function mostrarExclusiones(valor) {
 
     subCard1.classList.remove("card-bloqueada");
     subCard2.classList.remove("card-bloqueada");
+
+    exclusionesNombres(); // VALE: para que se muestren los nombres al seleccionar "Sí"
 
     localStorage.setItem("exclusiones", "Sí");
     alert(
@@ -388,10 +425,7 @@ function verificarTipoEvento(valor) {
   } else {
     zonaPersonalizada.style.display = "none";
     localStorage.setItem("tipoEvento", valor);
-    alert(
-      "Seleccionaste el evento: " +
-        valor);
-    // BORRAR EL NOMBRE PERSONALIZADO cuando no sea evento personalizado para que no aparezca en el resumen //VALE
+    alert("Seleccionaste el evento: " + valor);
     localStorage.removeItem("nombreEventoPersonalizado");
   }
 }
@@ -442,10 +476,10 @@ function mostrarCalendario() {
   });
 
   const divBotones = document.getElementById("divBotones");
-  divBotones.innerHTML =`
+  divBotones.innerHTML = `
     <button id="aceptarFecha" class="btn rounded-3 mt-3 btn-light">Aceptar</button>
     <button id="cancelarFecha" class="btn rounded-3 mt-3 btn-light">Cancelar</button>`;
-  
+
   document
     .getElementById("aceptarFecha")
     .addEventListener("click", aceptarFecha);
@@ -565,7 +599,7 @@ function seleccionarPresupuesto() {
   this.classList.add("seleccionado");
 }
 
-// Mostrar datos del intercambio 
+// Mostrar datos del intercambio
 function mostrarDatos() {
   const resultadoDiv = document.getElementById("resultadoEvento");
 
@@ -627,7 +661,6 @@ function mostrarDatos() {
 ================================================ */
 
 function resultadoSorteo() {
-
   if (sorteoRealizado) {
     let resultadoGuardado = JSON.parse(localStorage.getItem("resultadoSorteo"));
 
@@ -694,7 +727,6 @@ function resultadoSorteo() {
             <p><strong>${persona}</strong> regala a <strong>${resultadoFinal[persona]}</strong></p>
         `;
   }
-
 
   document.getElementById("ventanaSorteo").style.display = "flex";
 

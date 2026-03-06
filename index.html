@@ -1,216 +1,310 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilos.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="estilos.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
     <title>Miniproyecto</title>
-    <link rel="icon" href="img/Adobe Express - file.png">
-</head>
-<body>
-  <!-- Presentación -->
-  <div class="container-fluid bg-dark text-white text-center py-5 " id="presentacion">
-    <img src="logo.png" alt="pitufo bromista" class="mb-4" style="width: 150px;">
-    <h1 class="display-3">────୨ৎ─── Intercambio Sorpresa ───୨ৎ────</h1>
-    <p class="lead">Organiza tu intercambio de regalos fácil y rápido!</p>
-    <!-- <button [href]="#cards" class="btn btn-primary btn-lg mt-3" id="btnComenzar">
+    <link rel="icon" href="img/logoFullSize.png" />
+  </head>
+  <body>
+    <!-- Presentación -->
+    <div
+      class="container-fluid bg-dark text-white text-center py-5"
+      id="presentacion"
+    >
+      <img
+        src="img/logo.png"
+        alt="pitufo bromista"
+        class="mb-4"
+        style="width: 150px"
+      />
+      <h1 class="display-3">────୨ৎ─── Intercambio Sorpresa ───୨ৎ────</h1>
+      <p class="lead">Organiza tu intercambio de regalos fácil y rápido!</p>
+      <!-- <button [href]="#cards" class="btn btn-primary btn-lg mt-3" id="btnComenzar">
       Comenzar
     </button> -->
-    <a href="#cards" class="btn btn-primary btn-lg mt-3" id="btnComenzar">⋆ ˚ ꩜ ｡   Comenzar   ｡ ꩜ ˚ ⋆</a>
-  </div>
-  
-  <div id="cards" class="container">
-    <div class="row g-3 mt-1">
-      <!-- Organizador -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-body shadow-sm rounded-4 p-3"> 
-            <h6 class="text-center">¿Cuál es tu nombre?</h6>
-            <div id="zonaOrganizador">
-              <input type="text" id="inputNombreOrganizador" class="form-control mt-2 mb-2" placeholder="Nombre">
-              <input class="form-check-input" type="checkbox" id="checkDefault">
-              <label class="form-check-label" for="checkDefault">Inclúyeme en el sorteo</label><br>
-              <button type="button" id="agregarNombre" class="btn btn-light rounded-3 mt-3 d-flex mx-auto">Guardar</button>
-            </div>
-          </div> 
-        </div>
-      </div>
-
-      <!-- Participantes -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-            <div class="card-body shadow-sm rounded-4 p-3">
-                <h6 class="text-center">Lista de Participantes</h6>
-                <div class="d-flex justify-content-center text-center gap-3">
-                    <input type="text" id="inputParticipante" class="form-control mb-2" placeholder="Nombre del participante">
-                    <button type="button" id="btnAgregar" class="btn btn-light rounded-3 mb-2">Agregar</button>
-                </div>
-                <div id="listaParticipantes"></div>
-            </div>
-        </div>
-      </div>
-
-      <!-- Exclusiones -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-body shadow-sm rounded-4 p-3">
-            <h6 class="text-center">¿Deseas establecer exclusiones?</h6>
-            <p class="form-check-label">Usa exclusiones para evitar que ciertas personas saquen nombres específicos.</p>
-            <div class="d-flex justify-content-center">
-              <button type="button" class="btn btn-success me-2 btn-light" onclick="mostrarExclusiones(true)">
-                Sí
-              </button>
-              <button type="button" class="btn btn-danger btn-primary" onclick="mostrarExclusiones(false)">
-                No
-              </button>
-            </div>
-            <div id="zonaExclusiones" class="mt-4" style="display:none;">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100" id="subExclusiones1">
-          <div class="card-body shadow-sm rounded-4 p-3 ">
-            <h6 class="text-center">¿A quiénes se van a excluir?</h6>
-            <div id="exclusiones"></div>
-            <div class="d-flex justify-content-center text-center gap-3">
-              <button id="cancelarBtn" class="btn rounded-3 mt-3 btn-light">Cancelar</button>
-              <button id="hechoBtn" class="btn rounded-3 mt-3 btn-primary">Hecho</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100" id="subExclusiones2">
-          <div class="card-body shadow-sm rounded-4 p-3">
-            <h5 class="text-center">Exclusiones</h5>
-            <h6 class="text-center">Arrastra un participante</h6>
-            <div id="zonaArrastre" class="border p-3 mb-3 d-flex justify-content-center text-center flex-wrap"></div>
-
-            Zona donde se suelta
-            <h6 class="text-center">Asignar exclusiones</h6>
-            <div id="listaParticipantesExcluidos" class="border p-3"></div>
-
-            <button  id="confirmarExclusiones" class="btn btn-light mt-3 d-flex mx-auto">
-              Confirmar exclusiones
-            </button>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- Tipo de evento -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-body shadow-sm rounded-4 p-3">
-            <h6 class="text-center">Tipo de evento</h6>
-            <!-- SELECT -->
-            <select class="form-select mb-3" onchange="verificarTipoEvento(this.value)">
-              <option value="">Selecciona una opción</option>
-              <option value="Navidad">Navidad</option>
-              <option value="Cumpleaños">Cumpleaños</option>
-              <option value="San Valentín">San Valentín</option>
-              <option value="Otro">Ingresar otro...</option>
-            </select>
-
-            <!-- INPUT OCULTO PARA NOMBRE PERSONALIZADO -->
-            <div id="eventoPersonalizado" style="display:none;">
-              <label class="form-label">Nombre de la celebración</label>
-              <input type="text" class="form-control" id="nombreEventoExtra"
-                    placeholder="Escribe el nombre del evento"
-                    oninput="guardarEventoPersonalizado()">
-                    <button type="button" id="guardarEventoBtn" class="btn btn-primary mt-2">Guardar evento personalizado</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- Dia de celebración de intercambio -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-body shadow-sm rounded-4 p-3 text-center">
-            <h6 class="text-center">¿Cuándo se celebra el intercambio 2026?</h6><br>
-            <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
-              <button id="fecha1" class="btn btn-light"></button><br>
-              <button id="fecha2" class="btn btn-light mt-1"></button><br>
-              <button id="fecha3" class="btn btn-light mt-1"></button><br>
-            </div>
-            <button id="fechaCalendario" class="btn rounded-3 mt-3 btn-light">Otro 🖋️</button> 
-            <div id="calendario"></div>
-            <div class="d-flex justify-content-center gap-2 mt-3" id="divBotones">
-              <button id="cancelarFecha" class="btn rounded-3 mt-3 btn-light">Cancelar</button>
-            </div>
-          </div>
-        </div> 
-      </div>
-
-      <!-- Presupuesto -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-            <div class="card-body shadow-sm rounded-4 p-3">
-                <h6 class="text-center">Presupuesto</h6>
-                <div id="contenedorPresupuestos">
-                    <div class="p-2 border presupuesto" data-valor="200">$200</div>
-                    <div class="p-2 border presupuesto" data-valor="300">$300</div>
-                    <div class="p-2 border presupuesto" data-valor="400">$400</div>
-                    <div class="p-2 border presupuesto" data-valor="500">$500</div>
-                    <div class="p-2 border presupuesto" data-valor="600">$600</div>
-                    <div class="p-2 border presupuesto" data-valor="otro">Otro</div>
-                </div>
-                <div id="contenedorInputOtro"></div>
-                <button id="btnGuardarCosto" class="btn btn-light rounded-3 mt-3 d-flex mx-auto">Guardar presupuesto</button>
-            </div>
-        </div>
-      </div>
-
-      <!-- Mostrar los datos seleccionados -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-body shadow-sm rounded-4 p-3">
-            <h6 class="text-center">Resumen del intercambio</h6>
-            <button class="btn btn-light mb-1 d-flex mx-auto" onclick="mostrarDatos()">
-              Mostrar
-            </button>
-            <div id="resultadoEvento"></div>
-          </div>
-        </div>
-      </div>
-
-    <!-- Sorteo -->
-      <div class="col-12 col-md-6 col-lg-4 mb-4">
-        <div class="card h-100">
-          <div class="card-body shadow-sm rounded-4 p-3">
-            <h6 class="text-center">Resultados del sorteo</h6>
-            <button id="btnSorteo" class="btn btn-light mb-3 d-flex mx-auto">
-              Mostrar sorteo
-            </button>
-          </div>  
-        </div>
-      </div>
-
+      <a href="#cards" class="btn btn-primary btn-lg mt-3" id="btnComenzar"
+        >⋆ ˚ ꩜ ｡ Comenzar ｡ ꩜ ˚ ⋆</a
+      >
     </div>
-  </div>
 
-  <div id="ventanaSorteo" class="ventana-sorteo" style="display:none;">
-    <div class="ventana-contenido">
-      <h5 class="text-center mb-3">Resultado del sorteo</h5>
-      <div id="resultadoSorteo"></div>
-      <div class="text-center">
-        <button id="cerrarVentana" class="btn btn-secondary mt-3">
-          Cerrar
-        </button>
+    <div id="cards" class="container">
+      <div class="row g-3 mt-1">
+        <!-- Organizador -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">¿Cuál es tu nombre?</h6>
+              <div id="zonaOrganizador">
+                <input
+                  type="text"
+                  id="inputNombreOrganizador"
+                  class="form-control mt-2 mb-2"
+                  placeholder="Nombre"
+                />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="checkDefault"
+                />
+                <label class="form-check-label" for="checkDefault"
+                  >Inclúyeme en el sorteo</label
+                ><br />
+                <button
+                  type="button"
+                  id="agregarNombre"
+                  class="btn btn-light rounded-3 mt-3 d-flex mx-auto"
+                >
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Participantes -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">Lista de Participantes</h6>
+              <div class="d-flex justify-content-center text-center gap-3">
+                <input
+                  type="text"
+                  id="inputParticipante"
+                  class="form-control mb-2"
+                  placeholder="Nombre del participante"
+                />
+                <button
+                  type="button"
+                  id="btnAgregar"
+                  class="btn btn-light rounded-3 mb-2"
+                >
+                  Agregar
+                </button>
+              </div>
+              <div id="listaParticipantes"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exclusiones -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">¿Deseas establecer exclusiones?</h6>
+              <p class="form-check-label">
+                Usa exclusiones para evitar que ciertas personas saquen nombres
+                específicos.
+              </p>
+              <div class="d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-success me-2 btn-light"
+                  id="btnExclusionesSi"
+                >
+                  Sí
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-primary"
+                  id="btnExclusionesNo"
+                >
+                  No
+                </button>
+              </div>
+              <div
+                id="zonaExclusiones"
+                class="mt-4"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100" id="subExclusiones1">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">¿A quiénes se van a excluir?</h6>
+              <div id="exclusiones"></div>
+              <div class="d-flex justify-content-center text-center gap-3">
+                <button id="cancelarBtn" class="btn rounded-3 mt-3 btn-light">
+                  Cancelar
+                </button>
+                <button id="hechoBtn" class="btn rounded-3 mt-3 btn-primary">
+                  Hecho
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100" id="subExclusiones2">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h5 class="text-center">Exclusiones</h5>
+              <h6 class="text-center">Arrastra un participante</h6>
+              <div
+                id="zonaArrastre"
+                class="border p-3 mb-3 d-flex justify-content-center text-center flex-wrap"
+              ></div>
+
+              Zona donde se suelta
+              <h6 class="text-center">Asignar exclusiones</h6>
+              <div id="listaParticipantesExcluidos" class="border p-3"></div>
+
+              <button
+                id="confirmarExclusiones"
+                class="btn btn-light mt-3 d-flex mx-auto"
+              >
+                Confirmar exclusiones
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tipo de evento -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">Tipo de evento</h6>
+              <!-- SELECT -->
+              <select class="form-select mb-3" id="selectEvento">
+                <option value="">Selecciona una opción</option>
+                <option value="Navidad">Navidad</option>
+                <option value="Cumpleaños">Cumpleaños</option>
+                <option value="San Valentín">San Valentín</option>
+                <option value="Otro">Ingresar otro...</option>
+              </select>
+
+              <!-- INPUT OCULTO PARA NOMBRE PERSONALIZADO -->
+              <div id="eventoPersonalizado" style="display: none">
+                <label class="form-label">Nombre de la celebración</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombreEventoExtra"
+                  placeholder="Escribe el nombre del evento"
+                />
+                <button
+                  type="button"
+                  id="guardarEventoBtn"
+                  class="btn btn-primary mt-2"
+                >
+                  Guardar evento personalizado
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dia de celebración de intercambio -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3 text-center">
+              <h6 class="text-center">
+                ¿Cuándo se celebra el intercambio 2026?
+              </h6>
+              <br />
+              <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
+                <button id="fecha1" class="btn btn-light"></button><br />
+                <button id="fecha2" class="btn btn-light mt-1"></button><br />
+                <button id="fecha3" class="btn btn-light mt-1"></button><br />
+              </div>
+              <button id="fechaCalendario" class="btn rounded-3 mt-3 btn-light">
+                Otro 🖋️
+              </button>
+              <div id="calendario"></div>
+              <div
+                class="d-flex justify-content-center gap-2 mt-3"
+                id="divBotones"
+              >
+                <button id="cancelarFecha" class="btn rounded-3 mt-3 btn-light">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Presupuesto -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">Presupuesto</h6>
+              <div id="contenedorPresupuestos">
+                <div class="p-2 border presupuesto" data-valor="200">$200</div>
+                <div class="p-2 border presupuesto" data-valor="300">$300</div>
+                <div class="p-2 border presupuesto" data-valor="400">$400</div>
+                <div class="p-2 border presupuesto" data-valor="500">$500</div>
+                <div class="p-2 border presupuesto" data-valor="600">$600</div>
+                <div class="p-2 border presupuesto" data-valor="otro">Otro</div>
+              </div>
+              <div id="contenedorInputOtro"></div>
+              <button
+                id="btnGuardarCosto"
+                class="btn btn-light rounded-3 mt-3 d-flex mx-auto"
+              >
+                Guardar presupuesto
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mostrar los datos seleccionados -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">Resumen del intercambio</h6>
+              <button
+                class="btn btn-light mb-1 d-flex mx-auto"
+                id="btnMostrarDatos"
+              >
+                Mostrar
+              </button>
+              <div id="resultadoEvento"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sorteo -->
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body shadow-sm rounded-4 p-3">
+              <h6 class="text-center">Resultados del sorteo</h6>
+              <button id="btnSorteo" class="btn btn-light mb-3 d-flex mx-auto">
+                Mostrar sorteo
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<script src="script.js"></script>
-</body>
+    <div id="ventanaSorteo" class="ventana-sorteo" style="display: none">
+      <div class="ventana-contenido">
+        <h5 class="text-center mb-3">Resultado del sorteo</h5>
+        <div id="resultadoSorteo"></div>
+        <div class="text-center">
+          <button id="cerrarVentana" class="btn btn-secondary mt-3">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
+  </body>
 </html>
